@@ -22,10 +22,10 @@ jobs:
       NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
       WX_STATE_DIR: ${{ github.workspace }}/state
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # Restore the newest saved state (what has already been alerted).
-      - uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v6
         with:
           path: state
           key: wx-state-none
@@ -39,7 +39,7 @@ jobs:
       - name: Melbourne gusts
         run: python3 -I check_gusts.py || echo "gust check failed; will retry next run"
 
-      - uses: actions/cache/save@v4
+      - uses: actions/cache/save@v6
         if: always()
         with:
           path: state
