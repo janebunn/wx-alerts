@@ -1,0 +1,57 @@
+name: alerts
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+# One run at a time, so two runs never race on the state files.
+concurrency:
+  group: wx-alerts
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: write # only used by the monthly keep-alive step
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      WX_STATE_DIR: ${{ github.workspace }}/state
+    steps:
+      - uses: actions/checkout@v4
+
+      # Restore the newest saved state (what has already been alerted).
+      - uses: actions/cache/restore@v4
+        with:
+          path: state
+          key: wx-state-none
+          restore-keys: wx-state-
+
+      # A failed check must not turn the run red (that would email on every
+      # BoM hiccup); the scripts leave their state alone and the next run retries.
+      - name: Victorian warnings
+        run: python3 -I check_warnings.py || echo "warnings check failed; will retry next run"
+
+      - name: Melbourne gusts
+        run: python3 -I check_gusts.py || echo "gust check failed; will retry next run"
+
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: state
+          key: wx-state-${{ github.run_id }}-${{ github.run_attempt }}
+
+      # GitHub switches off scheduled workflows after 60 days without repo
+      # activity. Re-enabling this one once a month resets that clock.
+      - name: Keep schedule alive
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ "$(date -u +%d)" = "01" ] && [ "$(date -u +%H)" = "00" ]; then
+            gh workflow enable alerts.yml --repo "$GITHUB_REPOSITORY" || true
+          fi
