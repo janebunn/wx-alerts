@@ -2,7 +2,7 @@ name: alerts
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "2-59/5 * * * *"
   workflow_dispatch:
 
 # One run at a time, so two runs never race on the state files.

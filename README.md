@@ -1,6 +1,6 @@
 # wx-alerts
 
-Phone alerts (via [ntfy](https://ntfy.sh)) for Victorian weather, run on GitHub Actions every 5 minutes so they keep working when the computer is off.
+Phone alerts (via [ntfy](https://ntfy.sh)) for Victorian weather, run on GitHub Actions every 5 minutes (at :02, :07, :12, … to dodge GitHub's busiest slots) so they keep working when the computer is off.
 
 - `check_warnings.py` — BoM's Victorian warnings feed. Alerts on a new, updated (reissued) or ended Severe Weather / Severe Thunderstorm warning, and on new or updated Fire Weather and Frost warnings.
 - `check_gusts.py` — BoM's Melbourne observations table. Alerts the first time a station's peak gust reaches 75 km/h, and again each time its peak rises (`THRESHOLD_KMH` at the top of the file).
