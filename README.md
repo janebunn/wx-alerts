@@ -4,7 +4,7 @@ Phone alerts (via [ntfy](https://ntfy.sh)) for Victorian weather, run on GitHub 
 
 - `check_warnings.py` — BoM's state warnings feeds, per region (see `REGIONS` at the top of the file):
   - **Victoria**: new, updated (reissued) or ended Severe Weather / Severe Thunderstorm warnings, and new or updated Fire Weather and Frost warnings.
-  - **Sydney**: new and ended Severe Weather / Severe Thunderstorm warnings that name the Sydney Metropolitan forecast district.
+  - **Sydney**: new, updated (reissued) and ended Severe Weather / Severe Thunderstorm warnings that name the Sydney Metropolitan forecast district.
   - **Brisbane**: the same, for the Southeast Coast forecast district.
   A region added later is baselined silently the first time it is seen.
 - `check_gusts.py` — BoM's Melbourne observations table. Alerts the first time a station's peak gust reaches 75 km/h, and again each time its peak rises (`THRESHOLD_KMH` at the top of the file).

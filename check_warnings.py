@@ -11,10 +11,10 @@ set of warning types, and its own idea of which events are worth an alert:
          Thunderstorm, ENDED (cancelled, finalised or lapsed).
   SYD  - Sydney only: warnings naming the Sydney Metropolitan forecast
          district, in the NSW feed. Severe Weather and Severe Thunderstorm,
-         NEW and ENDED.
+         NEW, UPDATED and ENDED.
   BNE  - Brisbane only: warnings naming the Southeast Coast forecast district
          (the district Brisbane sits in), in the QLD feed. Severe Weather and
-         Severe Thunderstorm, NEW and ENDED.
+         Severe Thunderstorm, NEW, UPDATED and ENDED.
 
 Each warning is tracked by BoM's product link plus warning type, not by its
 text, so a headline that changes (districts added or dropped) is one UPDATED
@@ -82,7 +82,7 @@ REGIONS = [
         "url": "https://www.bom.gov.au/fwo/IDZ00054.warnings_nsw.xml",
         "types": SEVERE,
         "end_types": SEVERE,
-        "updated": False,
+        "updated": True,
         "match": lambda clause: "sydneymetro" in _norm(clause),
     },
     {
@@ -92,7 +92,7 @@ REGIONS = [
         "url": "https://www.bom.gov.au/fwo/IDZ00056.warnings_qld.xml",
         "types": SEVERE,
         "end_types": SEVERE,
-        "updated": False,
+        "updated": True,
         "match": lambda clause: "southeastcoast" in _norm(clause),
     },
 ]
